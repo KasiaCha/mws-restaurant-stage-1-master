@@ -49,18 +49,39 @@ fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
+  const head = document.getElementsByTagName('head')[0];
+  const description = document.createElement('meta');
+  description.setAttribute('name', 'description');
+  description.setAttribute('content', `Detailed information about ${restaurant.name}`);
+  head.append(description);
+
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
+  name.title = 'restaurant name';
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
+  address.title = 'restaurant address';
+
+  const picture = document.getElementById('picure-element');
+  const sourceOne = document.createElement("SOURCE");
+  const sourceTwo = document.createElement("SOURCE");
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  picture.className = 'restaurant-img'
+  image.src = DBHelper.imageUrlForRestaurant(restaurant, 0);
+  image.alt = DBHelper.getPhotoDescription(restaurant);
+
+  sourceOne.media = '(min-width: 800px)';
+  sourceOne.srcset = DBHelper.imageUrlForRestaurant(restaurant, 2);
+  sourceTwo.media = '(max-width: 500px)';
+  sourceTwo.srcset = DBHelper.imageUrlForRestaurant(restaurant);
+  picture.insertBefore(sourceOne, image);
+  picture.insertBefore(sourceTwo, image);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
+  cuisine.title = 'restaurant cuisine type';
 
   // fill operating hours
   if (restaurant.operating_hours) {
@@ -97,7 +118,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
