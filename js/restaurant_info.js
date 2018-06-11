@@ -63,7 +63,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
   address.title = 'restaurant address';
 
-  const picture = document.getElementById('picure-element');
+  const picture = document.getElementById('picTure-element');
   const sourceOne = document.createElement("SOURCE");
   const sourceTwo = document.createElement("SOURCE");
 
